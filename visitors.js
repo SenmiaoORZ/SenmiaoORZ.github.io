@@ -25,7 +25,7 @@
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 12000);
     try {
-      const response = await fetch(url, { signal: controller.signal, credentials: 'omit' });
+      const response = await fetch(url, { signal: controller.signal, credentials: 'omit', cache: 'no-cache' });
       if (!response.ok) throw new Error(`Statistics returned ${response.status}`);
       return await response.json();
     } finally { clearTimeout(timer); }
