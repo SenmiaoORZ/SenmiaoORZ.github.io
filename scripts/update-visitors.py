@@ -76,7 +76,13 @@ def main():
         temporary.write_text(json.dumps(result, ensure_ascii=False, separators=(',', ':'))+'\n')
         temporary.replace(args.output)
     except HTTPError as error:
-        print(f'GoatCounter API returned HTTP {error.code}; existing statistics were preserved.', file=sys.stderr)
+        endpoint = error.url.split('/api/v0/')[-1].split('?')[0]
+        try:
+            detail = json.load(error)
+            message = str(detail.get('error', detail.get('errors', ''))).replace(token, '[redacted]')[:400]
+        except (ValueError, OSError):
+            message = 'No JSON error details were returned.'
+        print(f'GoatCounter {endpoint} returned HTTP {error.code}: {message}; existing statistics were preserved.', file=sys.stderr)
         return 1
     except (URLError, ValueError, KeyError, TypeError, OSError) as error:
         print(f'Could not update aggregate statistics ({type(error).__name__}); existing statistics were preserved.', file=sys.stderr)
