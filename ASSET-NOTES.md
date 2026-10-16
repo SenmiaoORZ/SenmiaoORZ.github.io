@@ -51,3 +51,9 @@ Venue and year labels follow Scholar, including CPAL 2025 on the Taylor Expansio
 ## Current research focus
 
 The user updated the current research description to exploration across robotics, primarily dexterous hands, robotic foundation models, and embodied agents. The introduction, topic labels, and page descriptions reflect this update.
+
+## Company logos
+
+- `assets/cruise-logo.svg`: Cruise wordmark, originally extracted from https://getcruise.com/ and retrieved from https://commons.wikimedia.org/wiki/File:Cruise_logo.svg (original SVG: https://upload.wikimedia.org/wikipedia/commons/1/1a/Cruise_logo.svg). Original artwork and colors are preserved.
+- `assets/bmw-logo.svg`: BMW roundel downloaded from the official BMW USA website, https://www.bmwusa.com/content/dam/bmw/marketUS/common/images/logo-icons/BMW/BMW_Grey_Logo.svg.asset.1695740583799.svg. Original artwork and colors are preserved.
+- Both logos are hosted locally and shown on white backgrounds for legibility in both themes. Trademarks belong to their respective owners.
