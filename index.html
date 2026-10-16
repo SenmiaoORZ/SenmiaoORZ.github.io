@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eaf4ed">
+  <meta name="description" content="Zesen Zhao — PhD student at the University of Michigan. Research in robotics, dexterous hands, robotic foundation models, and embodied agents.">
+  <meta property="og:title" content="Zesen Zhao · Research & little things">
+  <meta property="og:description" content="Dexterous hands, robotic foundation models, and embodied agents at the University of Michigan.">
+  <meta property="og:url" content="https://senmiaoorz.github.io/">
+  <link rel="canonical" href="https://senmiaoorz.github.io/">
+  <title>Zesen Zhao · Research & little things</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/miku.png" as="image">
+  <link rel="stylesheet" href="styles.css">
+  <script src="vendor/matter.min.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="vendor/d3-array.min.js" defer></script>
+  <script src="vendor/d3-geo.min.js" defer></script>
+  <script src="visitors.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <canvas id="miku-world" aria-hidden="true"></canvas>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#updates">Updates</a>
+        <button id="theme-toggle" class="icon-button theme-toggle" aria-label="Switch to dark theme" title="Switch theme">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+        </button>
+      </nav>
+    </header>
+
+    <main id="main" class="paper">
+      <section class="hero" id="about" aria-labelledby="name">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="small-star">✧</span> RESEARCH & LITTLE THINGS</p>
+          <h1 id="name">Zesen Zhao<span class="name-period">.</span></h1>
+          <p class="chinese-name">赵泽森</p>
+          <p class="role">PhD student in Computer Science & Engineering<br><a href="https://cse.engin.umich.edu/">University of Michigan</a> <span class="location-dot">·</span> Ann Arbor, MI</p>
+          <div class="social-links" aria-label="Contact and profiles">
+            <a class="contact-link" href="mailto:hymanzzs@umich.edu"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><path d="m3.5 6 6.5 5 6.5-5"/></svg>Email</a>
+            <a href="https://scholar.google.com/citations?user=eDKnsl8AAAAJ&hl=en">Scholar <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/SenmiaoORZ">GitHub <span aria-hidden="true">↗</span></a>
+            <a href="https://www.linkedin.com/in/zesen-zhao-b1b859244/">LinkedIn <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="art-orbit" aria-hidden="true"></div>
+          <span class="art-spark spark-one" aria-hidden="true">✦</span>
+          <span class="art-spark spark-two" aria-hidden="true">✧</span>
+          <span class="art-spark spark-three" aria-hidden="true">+</span>
+          <span class="hello-note" aria-hidden="true">こんにちは!</span>
+          <img src="assets/miku.png" alt="A cheerful chibi Hatsune Miku with turquoise twin tails" class="hero-miku" width="264" height="276" fetchpriority="high">
+          <button class="rain-invite" id="make-rain" disabled><span aria-hidden="true">✧</span> A little Miku rain <span aria-hidden="true">↗</span></button>
+        </div>
+      </section>
+
+      <div class="about-row">
+        <div class="intro">
+          <p>Hi, I’m Zesen! I’m a PhD student at the University of Michigan, advised by <a href="https://web.eecs.umich.edu/~zmao/">Prof. Z. Morley Mao</a>. I also completed my undergraduate studies at Michigan, with a double major in <strong>Computer Science and Neuroscience</strong>.</p>
+          <p>I explore various topics in robotics, with a primary focus on <strong>dexterous hands, robotic foundation models, and embodied agents</strong>.</p>
+        </div>
+        <aside class="margin-note"><span class="note-pin" aria-hidden="true">✳</span><p>Thinking about intelligence.<br>Building for the real world.</p><span class="note-signature">研究と、好きなもの。</span></aside>
+      </div>
+
+      <section id="research" class="section research-section" aria-labelledby="research-title">
+        <div class="section-heading"><h2 id="research-title"><span class="section-number">01 /</span> Research</h2><span class="section-aside">from ideas to the physical world</span></div>
+        <div class="interest-line">
+          <div><span class="interest-icon" aria-hidden="true">↗</span><h3>Dexterous Hands</h3><p>Dexterity and <br>robotic manipulation.</p></div>
+          <div><span class="interest-icon" aria-hidden="true">⌘</span><h3>Robotic Foundation Models</h3><p>General-purpose models <br>for robotics.</p></div>
+          <div><span class="interest-icon" aria-hidden="true">✳</span><h3>Embodied Agents</h3><p>Perception, reasoning, <br>and action.</p></div>
+        </div>
+        <div class="subsection-heading"><h3>Publications</h3><a href="https://scholar.google.com/citations?user=eDKnsl8AAAAJ&amp;hl=en">Google Scholar <span aria-hidden="true">↗</span></a></div>
+        <div class="publication-list">
+          <article class="publication-item" aria-labelledby="publication-1">
+            <time class="publication-year" datetime="2026-07-20">2026</time>
+            <div class="publication-item-body">
+              <h4 id="publication-1"><a href="https://arxiv.org/abs/2607.17454">Test-Time Scaling for World Action Models via Zero-Shot Geometric Evaluation</a></h4>
+              <p class="authors"><strong>Zesen Zhao</strong>, Minkyoung Cho, Boyuan Zheng, Kunxiao Gao, Yulong Cao, Z Morley Mao</p>
+              <p class="publication-venue">CVPRW 2026 EAI Workshop</p>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2607.17454">Paper ↗</a><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=eDKnsl8AAAAJ&amp;pagesize=100&amp;citation_for_view=eDKnsl8AAAAJ:IjCSPb-OGe4C">Scholar ↗</a></div>
+            </div>
+          </article>
+          <article class="publication-item" aria-labelledby="publication-2">
+            <time class="publication-year" datetime="2026-06-09">2026</time>
+            <div class="publication-item-body">
+              <h4 id="publication-2"><a href="https://arxiv.org/abs/2606.10650">Dynamic Linear Attention</a></h4>
+              <p class="authors">Xin Wang, Hui Shen, Boyuan Zheng, Xueshen Liu, Minkyoung Cho, Zhongwei Wan, <strong>Zesen Zhao</strong>, Zhuoqing Mao, Shen Yan, Mi Zhang</p>
+              <p class="publication-venue">ICML 2026</p>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2606.10650">Paper ↗</a><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=eDKnsl8AAAAJ&amp;pagesize=100&amp;citation_for_view=eDKnsl8AAAAJ:UeHWp8X0CEIC">Scholar ↗</a></div>
+            </div>
+          </article>
+          <article class="publication-item" aria-labelledby="publication-3">
+            <time class="publication-year" datetime="2026-05-17">2026</time>
+            <div class="publication-item-body">
+              <h4 id="publication-3"><a href="https://arxiv.org/abs/2605.17284">CLAP: Contrastive Latent-space Prompt Optimization for End-to-end Autonomous Driving</a></h4>
+              <p class="authors">Ruiyang Zhu, Yuehan He, Boyuan Zheng, <strong>Zesen Zhao</strong>, Ahmad Chalhoub, Qingzhao Zhang, Z Morley Mao</p>
+              <p class="publication-venue">arXiv preprint arXiv:2605.17284</p>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2605.17284">Paper ↗</a><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=eDKnsl8AAAAJ&amp;pagesize=100&amp;citation_for_view=eDKnsl8AAAAJ:qjMakFHDy7sC">Scholar ↗</a></div>
+            </div>
+          </article>
+          <article class="publication-item" aria-labelledby="publication-4">
+            <time class="publication-year" datetime="2026-02-28">2026</time>
+            <div class="publication-item-body">
+              <h4 id="publication-4"><a href="https://arxiv.org/abs/2603.00720">MARS: Harmonizing Multimodal Convergence via Adaptive Rank Search</a></h4>
+              <p class="authors">Minkyoung Cho, Insu Jang, Shuowei Jin, <strong>Zesen Zhao</strong>, Adityan Jothi, Ethem F Can, Min-Hung Chen, Z Morley Mao</p>
+              <p class="publication-venue">NeurIPS 2026</p>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2603.00720">Paper ↗</a><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=eDKnsl8AAAAJ&amp;pagesize=100&amp;citation_for_view=eDKnsl8AAAAJ:d1gkVwhDpl0C">Scholar ↗</a></div>
+            </div>
+          </article>
+          <article class="publication-item" aria-labelledby="publication-5">
+            <time class="publication-year" datetime="2024-09-23">2024</time>
+            <div class="publication-item-body">
+              <h4 id="publication-5"><a href="https://arxiv.org/abs/2409.15518">Eagle: Efficient Training-Free Router for Multi-LLM Inference</a></h4>
+              <p class="authors"><strong>Zesen Zhao</strong>, Shuowei Jin, Z Morley Mao</p>
+              <p class="publication-venue">NeurIPS 2024 ML for System Workshop</p>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2409.15518">Paper ↗</a><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=eDKnsl8AAAAJ&amp;pagesize=100&amp;citation_for_view=eDKnsl8AAAAJ:u-x6o8ySG0sC">Scholar ↗</a></div>
+            </div>
+          </article>
+          <article class="publication-item" aria-labelledby="publication-6">
+            <time class="publication-year" datetime="2024-09-04">2024</time>
+            <div class="publication-item-body">
+              <h4 id="publication-6"><a href="https://arxiv.org/abs/2409.02371">Unfolding Videos Dynamics via Taylor Expansion</a></h4>
+              <p class="authors">Siyi Chen, Minkyu Choi, <strong>Zesen Zhao</strong>, Kuan Han, Qing Qu, Zhongming Liu</p>
+              <p class="publication-venue">CPAL 2025</p>
+              <div class="paper-links"><a href="https://arxiv.org/abs/2409.02371">Paper ↗</a><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=eDKnsl8AAAAJ&amp;pagesize=100&amp;citation_for_view=eDKnsl8AAAAJ:u5HHmVD_uO8C">Scholar ↗</a></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="two-column">
+        <section id="updates" class="section" aria-labelledby="updates-title">
+          <div class="section-heading"><h2 id="updates-title"><span class="section-number">02 /</span> Little updates</h2><span class="tiny-flower" aria-hidden="true">✿</span></div>
+          <ol class="news-list">
+            <li><time datetime="2026-06">Jun 2026</time><p>CVPR 2026 in Denver. <span class="muted">Always happy to talk research!</span></p></li>
+            <li><time datetime="2026-05">May 2026</time><p>Started my VLM Research Internship at <strong>Cruise</strong>.</p></li>
+            <li><time datetime="2025-12">Dec 2025</time><p>NeurIPS 2025 in San Diego.</p></li>
+            <li><time datetime="2025-04">Apr 2025</time><p>Accepted my PhD offer from the <strong>University of Michigan</strong>!</p></li>
+          </ol>
+          <details class="older-news"><summary>Earlier updates <span aria-hidden="true">+</span></summary><ol class="news-list"><li><time datetime="2024-12">Dec 2024</time><p>Concluded my internship at BMW. Thanks for all the support!</p></li><li><time datetime="2024-11">Nov 2024</time><p>Two workshop papers accepted at NeurIPS 2024. Vancouver!</p></li></ol></details>
+        </section>
+        <div class="right-column">
+          <section class="section experience" aria-labelledby="experience-title">
+            <div class="section-heading"><h2 id="experience-title"><span class="section-number">03 /</span> Experience</h2></div>
+            <div class="experience-row"><span class="company-monogram cruise" aria-hidden="true">c</span><div><h3>Cruise</h3><p>VLA Research Intern</p></div><span class="experience-kind">Research</span></div>
+            <div class="experience-row"><span class="company-monogram bmw" aria-hidden="true">B</span><div><h3>BMW</h3><p>AI Engineer Intern</p></div><span class="experience-kind">Engineering</span></div>
+          </section>
+          <section class="section service" aria-labelledby="service-title"><div class="section-heading"><h2 id="service-title"><span class="section-number">04 /</span> Academic service</h2></div><p>Reviewer</p><ul><li>ICRA <span>2027</span></li><li>ARR <span>July 2025</span></li><li>ICLR DeLTa Workshop <span>2025</span></li><li>ICML Muslims in ML Workshop <span>2025</span></li></ul></section>
+        </div>
+      </div>
+
+      <section class="off-duty" aria-labelledby="off-duty-title"><div><p class="eyebrow">AWAY FROM THE KEYBOARD</p><h2 id="off-duty-title">A few other things I love<span> ♡</span></h2><p>Motorsports, gaming, and a good game of badminton.</p></div><div class="hobby-stamps" aria-label="Motorsports, gaming, badminton"><span title="Motorsports">🏎️</span><span title="Gaming">🎮</span><span title="Badminton">🏸</span></div></section>
+
+      <section class="section visitor-section" id="visitors" aria-labelledby="visitors-title">
+        <div class="section-heading"><h2 id="visitors-title"><span class="section-number">05 /</span> Hello, world<span class="visitor-heart"> ♡</span></h2><span class="section-aside">a little hello from around the world</span></div>
+        <div class="visitor-metrics" aria-live="polite">
+          <div><span class="metric-label">TOTAL VISITS</span><strong id="visits-total">—</strong><span class="metric-caption">since this little corner began</span></div>
+          <div><span class="metric-label">RECENT VISITS</span><strong id="visits-recent">—</strong><span class="metric-caption" id="visits-recent-label">in the last 7 days</span></div>
+          <div><span class="metric-label">COUNTRIES & REGIONS</span><strong id="visits-countries">—</strong><span class="metric-caption" id="visits-country-label">from all over the world</span></div>
+        </div>
+        <div class="visitor-map-heading"><span id="map-period-label">Visitor distribution · all time</span><div class="visitor-periods" role="group" aria-label="Visitor map time range"><button type="button" data-visitor-period="week" aria-pressed="false">7 days</button><button type="button" data-visitor-period="month" aria-pressed="false">30 days</button><button type="button" data-visitor-period="all" aria-pressed="true">All time</button></div></div>
+        <div class="visitor-map" id="visitor-map-container">
+          <svg id="visitor-world" viewBox="0 0 800 380" role="img" aria-labelledby="world-map-title world-map-description"><title id="world-map-title">World map of website visits</title><desc id="world-map-description">Country shading shows aggregate visits. The map will light up as visitors arrive.</desc></svg>
+          <div class="map-tooltip" id="map-tooltip" role="status" hidden></div>
+        </div>
+        <div class="map-legend"><span>Fewer visits</span><span class="legend-colors" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>More visits</span><span class="map-attribution">Map: Natural Earth</span></div>
+        <p class="visitor-empty" id="visitor-empty">Your first visitors will light up this map.</p>
+        <ul class="visitor-country-list" id="visitor-country-list" aria-label="Top visitor countries"></ul>
+        <div class="visitor-footnote"><span id="visitor-status">Loading visitor statistics…</span><a href="https://senmiaoorz.goatcounter.com/">Stats by GoatCounter <span aria-hidden="true">↗</span></a></div>
+      </section>
+
+      <footer class="site-footer"><span>© <span id="year">2026</span> Zesen Zhao</span><span>Made with curiosity <span class="footer-star" aria-hidden="true">✧</span> and a little Miku.</span><a href="mailto:hymanzzs@umich.edu">Say hello <span aria-hidden="true">↗</span></a></footer>
+    </main>
+    <p class="below-paper">Thanks for stopping by. <span lang="ja">またね!</span></p>
+  </div>
+
+  <div class="rain-controls" role="group" aria-label="Miku rain controls">
+    <img src="assets/miku.png" alt="" width="30" height="32">
+    <div class="rain-label"><span>Miku rain</span><span id="rain-status">Loading little friends…</span></div>
+    <span class="control-divider" aria-hidden="true"></span>
+    <button id="rain-pause" class="icon-button" aria-label="Pause Miku rain" title="Pause" aria-pressed="false" disabled><svg class="pause-icon" viewBox="0 0 20 20" fill="currentColor"><rect x="5.5" y="4" width="3" height="12" rx="1"/><rect x="11.5" y="4" width="3" height="12" rx="1"/></svg><svg class="play-icon" viewBox="0 0 20 20" fill="currentColor"><path d="m6 3 11 7-11 7Z"/></svg></button>
+    <button id="rain-replay" class="icon-button" aria-label="Restart Miku rain" title="Restart" disabled><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7a6.5 6.5 0 1 1-.1 5M4 2.5V7h4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button id="rain-more" class="more-button" disabled><span aria-hidden="true">+</span> More Miku</button>
+    <button id="rain-hide" class="icon-button hide-button" aria-label="Hide Miku rain" title="Hide animation" aria-pressed="false" disabled><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 10s3-5 8-5 8 5 8 5-3 5-8 5-8-5-8-5Z"/><circle cx="10" cy="10" r="2.3"/></svg></button>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript-note">The academic content works without JavaScript. Enable JavaScript to enjoy Miku rain.</p></noscript>
+</body>
+</html>

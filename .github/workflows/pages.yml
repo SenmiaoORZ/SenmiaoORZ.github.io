@@ -1,0 +1,49 @@
+name: Publish homepage and refresh visitor map
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Refresh aggregate visitor map
+        env:
+          GOATCOUNTER_API_TOKEN: ${{ secrets.GOATCOUNTER_API_TOKEN }}
+        run: |
+          python3 scripts/update-visitors.py
+      - name: Prepare public website
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          public = Path('_public')
+          public.mkdir()
+          for filename in ['index.html', 'styles.css', 'app.js', 'visitors.js', '.nojekyll']:
+              shutil.copy2(filename, public / filename)
+          for directory in ['assets', 'vendor', 'data']:
+              shutil.copytree(directory, public / directory)
+          PY
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _public
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

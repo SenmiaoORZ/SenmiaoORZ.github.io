@@ -1,0 +1,12 @@
+{
+  "provider": "GoatCounter",
+  "account": "senmiaoorz",
+  "available": false,
+  "generatedAt": null,
+  "total": null,
+  "periods": {
+    "all": { "visits": null, "countries": [] },
+    "week": { "visits": null, "countries": [] },
+    "month": { "visits": null, "countries": [] }
+  }
+}
