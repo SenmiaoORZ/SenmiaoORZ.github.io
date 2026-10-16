@@ -63,12 +63,21 @@ def main():
     if not token:
         parser.error('Set GOATCOUNTER_API_TOKEN to a token with Read statistics permission')
     def fetch(path, **query):
-        # Stay below GoatCounter's four API requests per second limit.
-        time.sleep(.3)
         url = f'https://{args.site}.goatcounter.com/api/v0/{path}?{urlencode(query)}'
         request = Request(url, headers={'Authorization': f'Bearer {token}', 'Content-Type': 'application/json', 'User-Agent': 'ZesenHomepageStats/1.0'})
-        with urlopen(request, timeout=25) as response:
-            return json.load(response)
+        for attempt in range(3):
+            # Stay below the API rate limit and retry short service interruptions.
+            time.sleep(.3 if attempt == 0 else 2 ** attempt)
+            try:
+                with urlopen(request, timeout=25) as response:
+                    return json.load(response)
+            except HTTPError as error:
+                if error.code not in {404, 429, 500, 502, 503, 504} or attempt == 2:
+                    raise
+                error.close()
+            except URLError:
+                if attempt == 2:
+                    raise
     try:
         result = build_snapshot(fetch, args.site, dt.datetime.now(UTC))
         args.output.parent.mkdir(parents=True, exist_ok=True)

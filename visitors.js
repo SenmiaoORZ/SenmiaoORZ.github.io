@@ -42,13 +42,23 @@
       $('visitor-status').textContent = 'Visitor counts by GoatCounter · country data is updating';
     }
   }
-  function knownTotal() { return counters.all ?? (snapshot.available ? snapshot.total : null); }
+  function countFor(period) {
+    const live = counters[period];
+    const saved = snapshot.available ? (period === 'all' ? snapshot.total : snapshot.periods?.[period]?.visits) : null;
+    if (!Number.isFinite(live)) return saved;
+    if (!Number.isFinite(saved)) return live;
+    // Public counters can lag the snapshot by four hours. Never show an older
+    // total; compare rolling periods only when their UTC calendar dates match.
+    const sameDate = snapshot.generatedAt?.slice(0, 10) === new Date().toISOString().slice(0, 10);
+    return period === 'all' || sameDate ? Math.max(live, saved) : live;
+  }
+  function knownTotal() { return countFor('all'); }
   function render() {
     const period = currentPeriod();
     const countries = period.countries || [];
     const canShowMap = snapshot.available || knownTotal() === 0;
     const recentPeriod = selected === 'month' ? 'month' : 'week';
-    const recent = counters[recentPeriod] ?? (snapshot.available ? snapshot.periods?.[recentPeriod]?.visits : null);
+    const recent = countFor(recentPeriod);
     $('visits-total').textContent = number(knownTotal());
     $('visits-recent').textContent = number(recent);
     $('visits-recent-label').textContent = `in the ${periods[recentPeriod]}`;
