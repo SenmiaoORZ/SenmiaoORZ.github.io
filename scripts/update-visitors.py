@@ -11,6 +11,7 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+from zoneinfo import ZoneInfo
 
 UTC = dt.timezone.utc
 
@@ -38,16 +39,24 @@ def country_rows(fetch, start, end):
         offset += len(stats)
     return sorted(countries.values(), key=lambda row: (-row['count'], row['code']))
 
-def build_snapshot(fetch, account, now):
+def build_snapshot(fetch, account, now, reporting_timezone='America/Los_Angeles'):
     end = (now.replace(minute=0, second=0, microsecond=0) + dt.timedelta(hours=1)).isoformat()
     today = now.replace(hour=0, minute=0, second=0, microsecond=0)
     ranges = {'all': dt.datetime(2000, 1, 1, tzinfo=UTC), 'week': today-dt.timedelta(days=6), 'month': today-dt.timedelta(days=29)}
     periods = {}
+    account_timezone = ZoneInfo(reporting_timezone)
     for name, start in ranges.items():
         total = fetch('stats/total', start=start.isoformat(), end=end)
-        visits = int(total.get('total_utc', total.get('total', 0)))
+        # Explicit UTC bounds already define the desired count. total_utc is
+        # additionally shifted by the account timezone in GoatCounter's API.
+        visits = int(total['total'])
         # This homepage records page visits only, with no click events.
-        countries = country_rows(fetch, start.isoformat(), end)
+        # Country aggregates are stored by UTC calendar date, but API date
+        # arguments are converted through the account's dashboard timezone.
+        # Preserve the intended date labels through that conversion.
+        country_start = start.replace(tzinfo=account_timezone).isoformat()
+        country_end = dt.datetime.fromisoformat(end).replace(tzinfo=account_timezone).isoformat()
+        countries = country_rows(fetch, country_start, country_end)
         periods[name] = {'visits': max(0, visits), 'countries': countries}
     return {'provider': 'GoatCounter', 'account': account, 'available': True,
             'generatedAt': now.isoformat(), 'total': periods['all']['visits'], 'periods': periods}
@@ -55,6 +64,7 @@ def build_snapshot(fetch, account, now):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--site', default='senmiaoorz')
+    parser.add_argument('--reporting-timezone', default='America/Los_Angeles', help='Timezone configured in the GoatCounter account preferences')
     parser.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[1] / 'data/visitors.json')
     args = parser.parse_args()
     if not re.fullmatch(r'[a-z0-9-]+', args.site):
@@ -79,7 +89,7 @@ def main():
                 if attempt == 2:
                     raise
     try:
-        result = build_snapshot(fetch, args.site, dt.datetime.now(UTC))
+        result = build_snapshot(fetch, args.site, dt.datetime.now(UTC), args.reporting_timezone)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         temporary = args.output.with_suffix('.tmp')
         temporary.write_text(json.dumps(result, ensure_ascii=False, separators=(',', ':'))+'\n')

@@ -51,6 +51,7 @@ Country data is a public aggregate JSON snapshot; it contains country codes, nam
 - Every push to `main`, manual workflow run, and scheduled run refreshes the aggregate country snapshot and deploys the public website files.
 - Scheduled refresh: every six hours, at minute 23 UTC. GitHub may delay scheduled jobs; the displayed map timestamp identifies the latest successful refresh.
 - To refresh immediately, open Actions → Publish homepage and refresh visitor map → Run workflow.
+- Statistics periods use UTC calendar days. The collector’s `--reporting-timezone` defaults to `America/Los_Angeles`, matching the GoatCounter account’s current preference; update that argument if the account timezone changes. This compensates for the API’s separate handling of hourly totals and daily country data.
 - The GoatCounter dashboard stays private. Only totals and country-level aggregates are published; the generated JSON is included in the deployment artifact, without creating recurring source commits.
 
 The homepage stays static and requires no server or paid hosting plan. GoatCounter’s free service supports reasonable public website usage: <https://www.goatcounter.com/>. Service limits and pricing remain subject to its current policy.
