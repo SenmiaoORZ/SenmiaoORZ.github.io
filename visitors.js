@@ -14,6 +14,8 @@
   let selected = 'all';
   let countryPaths = [];
   const namespace = 'http://www.w3.org/2000/svg';
+  const snapshotUrl = new URL('data/visitors.json', document.baseURI);
+  snapshotUrl.searchParams.set('v', Date.now().toString(36));
   const number = (value) => Number.isFinite(value) ? new Intl.NumberFormat('en-US').format(value) : '—';
   const currentPeriod = () => snapshot.periods?.[selected] || { countries: [] };
   const utcStart = (days) => {
@@ -160,7 +162,7 @@
     json(new URL('assets/world.geojson', document.baseURI)).then((world) => { features = world.features; drawMap(); render(); }).catch(() => {
       $('visitor-empty').textContent = 'The map could not load. Visitor counts are still available.';
     }),
-    json(new URL('data/visitors.json', document.baseURI)).then((data) => { snapshot = data; render(); }).catch(() => render()),
+    json(snapshotUrl).then((data) => { snapshot = data; render(); }).catch(() => render()),
     loadCounters()
   ]);
   // Never record local development or unrelated preview domains in live totals.

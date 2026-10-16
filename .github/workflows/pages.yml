@@ -32,6 +32,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import hashlib
           import shutil
           public = Path('_public')
           public.mkdir()
@@ -39,6 +40,12 @@ jobs:
               shutil.copy2(filename, public / filename)
           for directory in ['assets', 'vendor', 'data']:
               shutil.copytree(directory, public / directory)
+          index = public / 'index.html'
+          html = index.read_text()
+          for filename in ['styles.css', 'app.js', 'visitors.js', 'vendor/matter.min.js', 'vendor/d3-array.min.js', 'vendor/d3-geo.min.js']:
+              revision = hashlib.sha256((public / filename).read_bytes()).hexdigest()[:12]
+              html = html.replace(f'"{filename}"', f'"{filename}?v={revision}"')
+          index.write_text(html)
           PY
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
