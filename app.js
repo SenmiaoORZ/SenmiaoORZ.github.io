@@ -37,9 +37,29 @@
     const canvas = $('miku-world');
     const context = canvas.getContext('2d');
     if (!context) throw new Error('Canvas is unavailable.');
-    const image = new Image();
-    image.src = new URL('assets/miku.png', document.baseURI).href;
-    await image.decode();
+    const spritePaths = [
+      'assets/miku.png',
+      'assets/miku-rain-cheer.webp',
+      'assets/miku-rain-sleep.webp',
+      'assets/miku-rain-sing.webp',
+      'assets/miku-rain-surprise.webp'
+    ];
+    const spriteLoads = spritePaths.map(async (path, id) => {
+      const image = new Image();
+      image.src = new URL(path, document.baseURI).href;
+      try {
+        await image.decode();
+        return { id, image };
+      } catch {
+        return null;
+      }
+    });
+    // Keep the original shower start independent of the optional sprites.
+    const fallbackSprite = await spriteLoads[0] || await Promise.any(spriteLoads.slice(1).map(async (load) => {
+      const loaded = await load;
+      if (!loaded) throw new Error('A rain sprite could not load.');
+      return loaded;
+    }));
 
     const engine = Engine.create({ enableSleeping: true, positionIterations: 8, velocityIterations: 6 });
     engine.gravity.y = 1.05;
@@ -63,14 +83,30 @@
     let settled = false;
     let destroyed = false;
     const spriteCache = new Map();
+    let variants = [fallbackSprite];
+    let variantBag = [];
+    Promise.all(spriteLoads).then((loaded) => {
+      variants = loaded.filter(Boolean);
+      variantBag = [];
+    });
     const STEP = 1000 / 60;
 
+    function takeVariant() {
+      if (!variantBag.length) {
+        variantBag = variants.slice();
+        for (let i = variantBag.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [variantBag[i], variantBag[j]] = [variantBag[j], variantBag[i]];
+        }
+      }
+      return variantBag.pop();
+    }
     function spritesize() {
       const options = width < 600 ? [42, 48, 56] : [58, 68, 78];
       return options[Math.floor(Math.random() * options.length)];
     }
-    function sprite(size) {
-      const key = `${size}-${pixelRatio}`;
+    function sprite(size, { id, image }) {
+      const key = `${id}-${size}-${pixelRatio}`;
       if (!spriteCache.has(key)) {
         const tile = document.createElement('canvas');
         tile.width = Math.ceil(size * pixelRatio);
@@ -94,7 +130,7 @@
         context.save();
         context.translate(x, y);
         context.rotate(friend.angle);
-        context.drawImage(sprite(size), -size / 2, -size / 2, size, size);
+        context.drawImage(sprite(size, friend.plugin.variant), -size / 2, -size / 2, size, size);
         context.restore();
       }
       context.globalAlpha = 1;
@@ -175,7 +211,7 @@
       const friend = Bodies.circle(safeX, y ?? -size, radius, {
         label: 'Miku', restitution: 0.38, friction: 0.48, frictionStatic: 0.85,
         frictionAir: 0.008, density: 0.0012, sleepThreshold: 75,
-        plugin: { spriteSize: size }
+        plugin: { spriteSize: size, variant: takeVariant() }
       });
       Body.setAngle(friend, (Math.random() - 0.5) * 1.5);
       Body.setAngularVelocity(friend, (Math.random() - 0.5) * 0.09);
@@ -259,6 +295,7 @@
       releaseDrag();
       friends.forEach((friend) => Composite.remove(engine.world, friend));
       friends = [];
+      variantBag = [];
       Engine.clear(engine);
       target = automaticTarget;
       time = 0;
