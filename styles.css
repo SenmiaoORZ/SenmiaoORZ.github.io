@@ -53,3 +53,8 @@
 /* Internship notice and homepage-only hero illustration. */
 .intro .internship-callout{width:fit-content;max-width:100%;padding:11px 15px;border:1px solid var(--line);border-inline-start:4px solid var(--teal);border-radius:9px;background:var(--wash);color:var(--ink);line-height:1.65}
 .internship-callout strong{color:var(--teal);font-weight:700}
+
+/* Keep one divider between the side-by-side updates and the paper list. */
+.about-row + .two-column{margin-top:0;border-top:0}
+.two-column + .research-section{margin-top:28px;border-top:1px solid var(--line)}
+@media(max-width:540px){.two-column + .research-section{margin-top:22px}}

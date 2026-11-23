@@ -42,7 +42,12 @@
       'assets/miku-rain-cheer.webp',
       'assets/miku-rain-sleep.webp',
       'assets/miku-rain-sing.webp',
-      'assets/miku-rain-surprise.webp'
+      'assets/miku-rain-surprise.webp',
+      'assets/miku-rain-leek.webp',
+      'assets/miku-rain-science.webp',
+      'assets/miku-rain-dance.webp',
+      'assets/miku-rain-snow.webp',
+      'assets/miku-rain-race.webp'
     ];
     const spriteLoads = spritePaths.map(async (path, id) => {
       const image = new Image();
@@ -72,7 +77,7 @@
     let automaticTarget = 0;
     let hardLimit = 0;
     let time = 0;
-    let nextSpawn = 600;
+    let nextSpawn = 350;
     let accumulator = 0;
     let previousTime = null;
     let frame = null;
@@ -176,8 +181,11 @@
       ];
       Composite.add(engine.world, walls);
       const mobile = width < 600;
-      const meanRadius = mobile ? 21 : 30;
-      automaticTarget = Math.max(45, Math.min(mobile ? 140 : 290, Math.round(width * height * 0.66 / (Math.PI * meanRadius ** 2))));
+      // Keep the default sky sparse while giving the full sprite rotation room.
+      const area = width * height;
+      automaticTarget = mobile
+        ? Math.max(spritePaths.length, Math.min(14, Math.round(area / 26000)))
+        : Math.max(16, Math.min(24, Math.round(area / 48000)));
       hardLimit = mobile ? 190 : 400;
       // Keep memory bounded when a desktop window becomes a phone-sized window.
       if (friends.length > hardLimit) {
@@ -240,10 +248,11 @@
       time += delta;
       accumulator += delta;
       if (friends.length < target && time >= nextSpawn) {
+        const fillingExtra = friends.length >= automaticTarget;
         spawn();
-        // Small staggered groups feel like a shower rather than a single stream.
-        if (Math.random() > 0.5 && friends.length < target) spawn();
-        nextSpawn = time + (width < 600 ? 145 : 120);
+        // Keep the initial shower light; preserve staggered groups for explicitly added rain.
+        if (fillingExtra && Math.random() > 0.5 && friends.length < target) spawn();
+        nextSpawn = time + (fillingExtra ? (width < 600 ? 145 : 120) : (width < 600 ? 115 : 100));
       }
       while (accumulator >= STEP) {
         Engine.update(engine, STEP);
